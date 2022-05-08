@@ -32,8 +32,8 @@ function encryptRSA($plaintext)
     keygen();
     $rsa = new RSA();
     $rsa->loadKey(file_get_contents(getKeyPubFile()));
-    // public key
-    //$rsa->setEncryptionMode(RSA::ENCRYPTION_OAEP);
+    if($_POST['RSAmode'] == 'OEAP')
+        $rsa->setEncryptionMode(RSA::ENCRYPTION_OAEP);
     $ciphertext = $rsa->encrypt($plaintext);
     $ciphertext = base64_encode($ciphertext);
     return $ciphertext;
@@ -42,7 +42,6 @@ function decryptRSA($ciphertext)
 {
     $rsa = new RSA(); 
     $rsa->loadKey(file_get_contents(getKeyPrivFile()));
-    // private key
     $ciphertext = base64_decode($ciphertext);
     $decryptedText = $rsa->decrypt($ciphertext);
     return $decryptedText;

@@ -20,7 +20,7 @@
         <div class="container">
             <script src="hackerStyle.js"></script>
             <?php require 'decrittazione_rsa.php';require 'RSA.php';require 'elaborazione1.php';require 'SYM.php'?>          
-            <form method="POST">
+            <form method="POST" id="form">
                 <div class="testi">
                 <div>
                 <select name="decryptmode" id="decryptmode">
@@ -39,6 +39,21 @@
                         <option value="9">DES</option>
                     </optgroup>
                 </select>
+                <select id="RSAmode" name="RSAmode">
+                    <optgroup label ="modalità di cifratura">
+                        <option value="PKCS1">PKCS1</option>
+                        <option value="OEAP">OEAP</option>
+                    </optgroup>
+                </select>
+                <select id="SYMmode" name="SYMmode">
+                    <optgroup label ="modalità di cifratura">
+                        <option value="CBC">CBC (Cipher Blocker Chaining)</option>
+                        <option value="CTR">CTR</option>
+                        <option value="OFB">OFB</option>
+                        <option value="CFB">CFB</option>
+                        <option value="ECB">ECB (Electronic Codebook)</option>
+                    </optgroup>
+                </select>
                 </div>
                     <div class="testoDaCifrare">
                         <h1>TESTO DA DECIFRARE</h1>
@@ -50,7 +65,7 @@
 
                     <div class="testoCifrato">
                         <h1>TESTO DECIFRATO</h1>
-                        <textarea type="text" name="useless"placeholder="visualizzato qui" style="color:white;font-size: 18px;"><?php 
+                        <textarea type="text" name="useless" disabled placeholder="visualizzato qui" style="color:white;font-size: 18px;"><?php 
                             if(isset($_POST["decritta"]))
                                 {echo $decifrato;}else{} 
                         ?></textarea><br>
@@ -63,6 +78,38 @@
                     <input type='submit' value='Decifra'>
                     <p><span id="demo"></span><span id="blink">|</span></p>
                 </div>    
+
             </form>  
+    <script type="text/javascript">
+        //salva la selezione precedente
+        document.getElementById('decryptmode').value = "<?php echo $_POST['decryptmode'];?>";
+        document.getElementById('RSAmode').value = "<?php echo $_POST['RSAmode'];?>";
+        document.getElementById('SYMmode').value = "<?php echo $_POST['SYMmode'];?>";
+    </script>
+    <script>
+        //
+        (function onaction() {
+        var d=document;
+        var s1=d.getElementById('RSAmode');
+        var s2=d.getElementById('SYMmode');
+        var lo=d.getElementById('decryptmode')
+        var temp;
+        s1.className='hide';
+        s2.className='hide';
+
+        lo.onmousemove=function(){
+        if(this.value==='1') s1.className=s1.className.replace('hide','');
+        else {temp=this.value; s1.className='hide'; lo.value=temp;}
+        if(this.value=== '2'||this.value=== '3'||this.value=== '8'||this.value=== '9') s2.className=s2.className.replace('hide','');
+        else {temp=this.value; s2.className='hide'; lo.value=temp;}
+        };
+        lo.onchange=function(){
+        if(this.value==='1')s1.className=s1.className.replace('hide','');
+        else {temp=this.value; s1.className='hide'; lo.value=temp;}
+        if(this.value=== '2'||this.value=== '3'||this.value=== '8'||this.value=== '9') s2.className=s2.className.replace('hide','');
+        else {temp=this.value; s2.className='hide'; lo.value=temp;}
+        };
+        }());
+    </script>
     </body>
 </html>

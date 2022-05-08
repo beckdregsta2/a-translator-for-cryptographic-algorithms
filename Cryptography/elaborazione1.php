@@ -61,4 +61,15 @@ if($mode == 9)
     $DES = true;
 else
     $DES = false;
+
+
+
+// selezione metodo di cifratura
+if (isset($_POST['RSAmode']))
+    $RSAmode = $_POST['RSAmode'];
+else{$RSAmode = 'PKCS1';}
+
+if (isset($_POST['SYMmode']))
+    $SYMmode = $_POST['SYMmode'];
+else{$SYMmode = 'CBC';}
 ?>

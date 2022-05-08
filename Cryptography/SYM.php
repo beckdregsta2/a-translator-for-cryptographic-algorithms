@@ -18,9 +18,9 @@ function SYM_keygen($lenght)
     return $key;
 }
 //crittazione con AES
-function encryptAES($encryptionKey, $textInput, $blockType)
+function encryptAES($encryptionKey, $textInput, $SYMmode)
 {
-    switch ($blockType)
+    switch ($SYMmode)
     {
         case 'CBC':
             $cipher = new AES(AES::MODE_CBC);
@@ -52,7 +52,7 @@ function encryptAES($encryptionKey, $textInput, $blockType)
             $iv = '';
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     $encryptedResult = $iv . $cipher->encrypt($textInput);
@@ -60,10 +60,10 @@ function encryptAES($encryptionKey, $textInput, $blockType)
 }
 
 //decrittazione con AES
-function decryptAES($encryptionKey, $encryptedString, $blockType)
+function decryptAES($encryptionKey, $encryptedString, $SYMmode)
 {
     $data = base64_decode($encryptedString);
-    switch ($blockType) 
+    switch ($SYMmode) 
     {
         case 'CBC':
             $cipher = new AES(AES::MODE_CBC);
@@ -99,7 +99,7 @@ function decryptAES($encryptionKey, $encryptedString, $blockType)
             $cipherText = $data;
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     return $cipher->decrypt($cipherText);
@@ -110,44 +110,41 @@ function decryptAES($encryptionKey, $encryptedString, $blockType)
 
 
 //crittazione con RIJ
-function encryptRIJ($encryptionKey, $textInput, $blockType = 'CBC')
+function encryptRIJ($encryptionKey, $textInput, $SYMmode)
 {
-    switch ($blockType)
+    switch ($SYMmode)
     {
         case 'CBC':
             $cipher = new Rijndael(Rijndael::MODE_CBC);
             $cipher->setKey($encryptionKey);
             $iv = Random::string($cipher->getBlockLength() >> 3);
             $cipher->setIV($iv);
-            break;/*
+            break;
         case 'CTR':
-            $cipher = new AES(AES::MODE_CTR);
+            $cipher = new Rijndael(Rijndael::MODE_CTR);
             $cipher->setKey($encryptionKey);
-            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
-            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $iv = Random::string($cipher->getBlockLength() >> 3);
             $cipher->setIV($iv);
             break;
         case 'OFB':
-            $cipher = new AES(AES::MODE_OFB);
+            $cipher = new Rijndael(Rijndael::MODE_OFB);
             $cipher->setKey($encryptionKey);
-            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
-            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $iv = Random::string($cipher->getBlockLength() >> 3);
             $cipher->setIV($iv);
             break;
         case 'CFB':
-            $cipher = new AES(AES::MODE_CFB);
+            $cipher = new Rijndael(Rijndael::MODE_CFB);
             $cipher->setKey($encryptionKey);
-            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
-            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $iv = Random::string($cipher->getBlockLength() >> 3);
             $cipher->setIV($iv);
-            break;*/
+            break;
         case 'ECB':
             $cipher = new Rijndael(Rijndael::MODE_ECB);
             $cipher->setKey($encryptionKey);
             $iv = '';
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     $encryptedResult = $iv . $cipher->encrypt($textInput);
@@ -155,15 +152,35 @@ function encryptRIJ($encryptionKey, $textInput, $blockType = 'CBC')
 }
 
 //decrittazione con RIJ
-function decryptRIJ($encryptionKey, $encryptedString, $blockType = 'CBC')
+function decryptRIJ($encryptionKey, $encryptedString, $SYMmode)
 {
     $data = base64_decode($encryptedString);
-    switch ($blockType) 
+    switch ($SYMmode) 
     {
         case 'CBC':
             $cipher = new Rijndael(Rijndael::MODE_CBC);
             $cipher->setKey($encryptionKey);
-            // Split the IV from the ciphertext
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'CTR':
+            $cipher = new Rijndael(Rijndael::MODE_CTR);
+            $cipher->setKey($encryptionKey);
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'OFB':
+            $cipher = new Rijndael(Rijndael::MODE_OFB);
+            $cipher->setKey($encryptionKey);
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'CFB':
+            $cipher = new Rijndael(Rijndael::MODE_CFB);
+            $cipher->setKey($encryptionKey);
             $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
             $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
             $cipher->setIV($iv);
@@ -174,7 +191,7 @@ function decryptRIJ($encryptionKey, $encryptedString, $blockType = 'CBC')
             $cipherText = $data;
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     return $cipher->decrypt($cipherText);
@@ -257,12 +274,30 @@ function decryptRC2($encryptionKey, $encryptedString)
 }
 
 //crittazione con 3DES
-function encrypt3DES($encryptionKey, $textInput, $blockType = 'CBC')
+function encrypt3DES($encryptionKey, $textInput, $SYMmode)
 {
-    switch ($blockType)
+    switch ($SYMmode)
     {
         case 'CBC':
             $cipher = new TripleDES(DES::MODE_CBC);
+            $cipher->setKey($encryptionKey);
+            $iv = Random::string($cipher->getBlockLength() >> 3);
+            $cipher->setIV($iv);
+            break;
+        case 'CTR':
+            $cipher = new TripleDES(DES::MODE_CTR);
+            $cipher->setKey($encryptionKey);
+            $iv = Random::string($cipher->getBlockLength() >> 3);
+            $cipher->setIV($iv);
+            break;
+        case 'OFB':
+            $cipher = new TripleDES(DES::MODE_OFB);
+            $cipher->setKey($encryptionKey);
+            $iv = Random::string($cipher->getBlockLength() >> 3);
+            $cipher->setIV($iv);
+            break;
+        case 'CFB':
+            $cipher = new TripleDES(DES::MODE_CFB);
             $cipher->setKey($encryptionKey);
             $iv = Random::string($cipher->getBlockLength() >> 3);
             $cipher->setIV($iv);
@@ -273,7 +308,7 @@ function encrypt3DES($encryptionKey, $textInput, $blockType = 'CBC')
             $iv = '';
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     $encryptedResult = $iv . $cipher->encrypt($textInput);
@@ -281,15 +316,35 @@ function encrypt3DES($encryptionKey, $textInput, $blockType = 'CBC')
 }
 
 //decrittazione con 3DES
-function decrypt3DES($encryptionKey, $encryptedString, $blockType = 'CBC')
+function decrypt3DES($encryptionKey, $encryptedString, $SYMmode)
 {
     $data = base64_decode($encryptedString);
-    switch ($blockType) 
+    switch ($SYMmode) 
     {
         case 'CBC':
             $cipher = new TripleDES(DES::MODE_CBC);
             $cipher->setKey($encryptionKey);
-            // Split the IV from the ciphertext
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'CTR':
+            $cipher = new TripleDES(DES::MODE_CTR);
+            $cipher->setKey($encryptionKey);
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'OFB':
+            $cipher = new TripleDES(DES::MODE_OFB);
+            $cipher->setKey($encryptionKey);
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'CFB':
+            $cipher = new TripleDES(DES::MODE_CFB);
+            $cipher->setKey($encryptionKey);
             $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
             $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
             $cipher->setIV($iv);
@@ -300,19 +355,37 @@ function decrypt3DES($encryptionKey, $encryptedString, $blockType = 'CBC')
             $cipherText = $data;
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     return $cipher->decrypt($cipherText);
 }
 
 //crittazione con DES
-function encryptDES($encryptionKey, $textInput, $blockType = 'CBC')
+function encryptDES($encryptionKey, $textInput, $SYMmode)
 {
-    switch ($blockType)
+    switch ($SYMmode)
     {
         case 'CBC':
             $cipher = new DES(DES::MODE_CBC);
+            $cipher->setKey($encryptionKey);
+            $iv = Random::string($cipher->getBlockLength() >> 3);
+            $cipher->setIV($iv);
+            break;
+        case 'CTR':
+            $cipher = new DES(DES::MODE_CTR);
+            $cipher->setKey($encryptionKey);
+            $iv = Random::string($cipher->getBlockLength() >> 3);
+            $cipher->setIV($iv);
+            break;
+        case 'OFB':
+            $cipher = new DES(DES::MODE_OFB);
+            $cipher->setKey($encryptionKey);
+            $iv = Random::string($cipher->getBlockLength() >> 3);
+            $cipher->setIV($iv);
+            break;
+        case 'CFB':
+            $cipher = new DES(DES::MODE_CFB);
             $cipher->setKey($encryptionKey);
             $iv = Random::string($cipher->getBlockLength() >> 3);
             $cipher->setIV($iv);
@@ -323,7 +396,7 @@ function encryptDES($encryptionKey, $textInput, $blockType = 'CBC')
             $iv = '';
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     $encryptedResult = $iv . $cipher->encrypt($textInput);
@@ -331,15 +404,35 @@ function encryptDES($encryptionKey, $textInput, $blockType = 'CBC')
 }
 
 //decrittazione con DES
-function decryptDES($encryptionKey, $encryptedString, $blockType = 'CBC')
+function decryptDES($encryptionKey, $encryptedString, $SYMmode)
 {
     $data = base64_decode($encryptedString);
-    switch ($blockType) 
+    switch ($SYMmode) 
     {
         case 'CBC':
             $cipher = new DES(DES::MODE_CBC);
             $cipher->setKey($encryptionKey);
-            // Split the IV from the ciphertext
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'CTR':
+            $cipher = new DES(DES::MODE_CTR);
+            $cipher->setKey($encryptionKey);
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'OFB':
+            $cipher = new DES(DES::MODE_OFB);
+            $cipher->setKey($encryptionKey);
+            $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
+            $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
+            $cipher->setIV($iv);
+            break;
+        case 'CFB':
+            $cipher = new DES(DES::MODE_CFB);
+            $cipher->setKey($encryptionKey);
             $iv = substr($data, 0, $cipher->getBlockLength() >> 3);
             $cipherText = substr($data, $cipher->getBlockLength() >> 3, strlen($encryptedString));
             $cipher->setIV($iv);
@@ -350,7 +443,7 @@ function decryptDES($encryptionKey, $encryptedString, $blockType = 'CBC')
             $cipherText = $data;
             break;
         default:
-            throw new \Exception('Unknown encryption blocktype: ' . $blockType, 500);
+            throw new \Exception('errore nel metodo di cifratura: ' . $SYMmode, 500);
             break;
     }
     return $cipher->decrypt($cipherText);
@@ -361,14 +454,14 @@ if (isset($_POST["critta"]) && $_POST["cryptmode"] == 2)
 {
     $plaintext = $_POST["critta"];
     $key = SYM_keygen(10);
-    $cifrato = encryptAES($key,$plaintext,'CBC');
+    $cifrato = encryptAES($key,$plaintext,$SYMmode);
 }
 
 if (isset($_POST["critta"]) && $_POST["cryptmode"] == 3)
 {
     $plaintext = $_POST["critta"];
     $key = SYM_keygen(10);
-    $cifrato = encryptRIJ($key,$plaintext,'CBC');
+    $cifrato = encryptRIJ($key,$plaintext,$SYMmode);
 }
 
 if (isset($_POST["critta"]) && $_POST["cryptmode"] == 4)
@@ -399,30 +492,31 @@ if (isset($_POST["critta"]) && $_POST["cryptmode"] == 8)
 {
     $plaintext = $_POST["critta"];
     $key = SYM_keygen(10);
-    $cifrato = encrypt3DES($key,$plaintext);
+    $cifrato = encrypt3DES($key,$plaintext,$SYMmode);
 }
 if (isset($_POST["critta"]) && $_POST["cryptmode"] == 9)
 {
     $plaintext = $_POST["critta"];
     $key = SYM_keygen(10);
-    $cifrato = encryptDES($key,$plaintext);
+    $cifrato = encryptDES($key,$plaintext,$SYMmode);
 }
 
 
+//gestione algoritmi di crittografia nella decrittazione
 
 // decodifica la chiave da base64
 if (isset($_POST['key'])){$key = base64_decode($_POST['key']);}
 
-//gestione algoritmi di crittografia nella decrittazione
+
 if (isset($_POST["decritta"]) && $_POST["decryptmode"] == 2)
 {
     $ciphertext = $_POST["decritta"];
-    $decifrato = decryptAES($key,$ciphertext,$blockType);
+    $decifrato = decryptAES($key,$ciphertext,$SYMmode);
 }
 if (isset($_POST["decritta"]) && $_POST["decryptmode"] == 3)
 {
     $ciphertext = $_POST["decritta"];
-    $decifrato = decryptRIJ($key,$ciphertext,$blockType);
+    $decifrato = decryptRIJ($key,$ciphertext,$SYMmode);
 }
 if (isset($_POST["decritta"]) && $_POST["decryptmode"] == 4)
 {
@@ -447,12 +541,12 @@ if (isset($_POST["decritta"]) && $_POST["decryptmode"] == 7)
 if (isset($_POST["decritta"]) && $_POST["decryptmode"] == 8)
 {
     $ciphertext = $_POST["decritta"];
-    $decifrato = decrypt3DES($key,$ciphertext,$blockType);
+    $decifrato = decrypt3DES($key,$ciphertext,$SYMmode);
 }
 if (isset($_POST["decritta"]) && $_POST["decryptmode"] == 9)
 {
     $ciphertext = $_POST["decritta"];
-    $decifrato = decryptDES($key,$ciphertext,$blockType);
+    $decifrato = decryptDES($key,$ciphertext,$SYMmode);
 }
 
 
