@@ -1,0 +1,544 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-rendering: geometricPrecision;
+    font-family: 'Quantico', sans-serif;
+    letter-spacing: 2px;
+}
+
+body{
+    background-repeat: none;
+    background-size: cover; 
+
+}
+
+.index{
+    background-image: url(images/pc.jpg);
+}
+
+.chiSiamo{
+    background-image: url(images/texture3.jpg);
+}
+
+.cifra, .decifra{
+    background-image: url(images/code2.jpg);
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Quantico&display=swap');  
+
+nav{
+    height: 68px;
+    width: auto;
+    text-align: right;
+    font-size: 16px;
+    font-weight: bold; 
+    background-color: #ffffff;
+    margin-bottom: 100px; 
+}
+
+nav ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+  
+nav li {
+    display: inline-block;
+    padding-top: 24px;
+    position: relative;
+    margin-right: 56px;
+}
+  
+nav a {
+    color: #000000;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+.algoritmi{
+    position: relative;
+    display: inline-block;
+}
+
+.algoritmi:hover > .altriAlgoritmi{
+    display: block;
+}
+
+.altriAlgoritmi {
+    display: none;
+    position: absolute;
+    right: 54px;
+    top: 64px; 
+    background-color: #ffffff;
+    min-width: 116px;
+    z-index: 1;
+    padding-bottom: 16px;
+}
+
+/* nav ul ul{
+    display: none;
+} */
+
+.algoritmi:hover > .altriAlgoritmi{
+    display: block;
+}
+
+.altriAlgoritmi a{
+    color: #ff0000;
+    display: block;
+}
+
+.altriAlgoritmi li{
+    display: block;     
+    text-align: center;
+}
+  
+.animazioneNav a::before {
+    content: '';
+    display: block;
+    height: 5px;
+    background-color: rgb(0, 0, 0);
+    position: absolute;
+    top: 0;
+    width: 0%;
+    transition: all ease-in-out 250ms;
+}
+  
+.animazioneNav a:hover::before {
+    width: 100%;
+}
+
+.container{
+    width: 1000px;
+    height: 720px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inconsolata:wght@200&display=swap');
+.testi{
+    font-family: 'Inconsolata', monospace;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100&display=swap');
+
+h1{
+    color: #ffffff;
+    text-align: center; 
+}
+
+input, textarea{
+    border: none;
+}
+
+.testoDaCifrare{
+    display: inline-block;
+    float: left; 
+}
+
+textarea{
+	text-align: justify;
+    resize: none; 
+}
+
+.testoDaCifrare textarea{
+    margin-top: 24px; 
+    width: 400px;
+    height: 600px;
+    font-size: 24px; 
+    color: rgb(255, 255, 255);
+    border-radius: 8px;
+    background: rgb(6,0,26);
+    background: linear-gradient(113deg, rgba(6,0,26,1) 0%, rgba(25, 12, 126, 0.281) 90%, rgba(27,12,131,1) 100%);
+    border: 1px solid white;
+}
+
+.testoCifrato {
+    display: inline-block;
+    float: right;
+}
+
+.testoCifrato textarea{
+    margin-top: 24px;
+    height: 600px;
+    width: 400px; 
+    border-radius: 8px;
+    background: rgb(6,0,26);
+    background: linear-gradient(113deg, rgba(6,0,26,1) 0%, rgba(25, 12, 126, 0.281) 90%, rgba(27,12,131,1) 100%);
+    border: 1px solid white;
+}
+
+.selectCifra{
+    margin-top: 24px; 
+    margin-left: 180px;
+    width: 200px;
+    height: 60px;
+    padding-top: 16px;
+    background-color: #ffffff; 
+    font-size: 24px; 
+    color: rgb(255, 255, 255);
+    border-radius: 8px;
+    text-align: center;
+    border: 1px solid white;
+    background: rgb(0,0,0);
+    background: linear-gradient(43deg, rgba(0,0,0,1) 0%, rgba(64,5,70,1) 100%);
+    background-image: url(images/code3.jpg);
+    background-size: cover;
+    position: absolute; 
+    transition-duration: 0.8s;
+}
+
+
+.testi a{    
+    font-weight: bold;
+}
+
+.testi a:hover{
+    color: orangered;
+    transition: 0.2s; 
+}
+
+.selectCifra a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.selectCifra:hover {
+    padding-top: 80px;
+    width: 320px;
+    height: 400px;
+    display: block;
+    transition-duration: 0.8s; 
+    border: 4px solid white;
+    /* box-shadow: 0 0 5px #7565aa,
+    0 0 20px #7565AA,
+    0 0 60px #7565AA,
+    0 0 150px #7565AA; */
+    /* background: linear-gradient(113deg, rgba(111, 12, 131, 0.267)  0%, rgba(123, 105, 255, 0.281) 90%, rgb(117, 101, 170) 100%); */
+}
+
+.testoComparso{
+    font-size: 16px;
+    display: none; 
+    letter-spacing: 1px;
+}
+
+.selectCifra:hover > .testoComparso{
+    display: block;
+    padding-top: 24px; 
+}
+
+.selectCifra{
+    display: inline-block;
+}
+
+.selectDecifra{
+    margin-top: 24px; 
+    margin-right: 180px;
+    width: 200px;
+    height: 60px;
+    padding-top: 16px;
+    font-size: 24px; 
+    border-radius: 8px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    border: 1px solid white;
+    background: rgb(0,0,0);
+    background: linear-gradient(43deg, rgba(0,0,0,1) 0%, rgba(64,5,70,1) 100%);
+    background-image: url(images/code3.jpg);
+    background-size: cover;
+    transition-duration: 0.8s;
+}
+
+.selectDecifra a{
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.selectDecifra:hover{
+    padding-top: 80px;
+    width: 320px;
+    height: 400px;
+    display: block;
+    transition: 0.8s;
+    border: 4px solid white;
+}
+
+.selectDecifra:hover > .testoComparso{
+    display: block;
+    padding-top: 24px;
+}
+
+.selectDecifra{
+    display: inline-block;
+    float: right;
+}
+
+.invia input{
+    width: 104px;
+    height: auto;
+    padding: 8px; 
+    border-radius: 16px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    top: 148px;
+    right: 148px;
+    position: absolute;
+    font-size: 16px;
+    /* border: 1px solid rgb(255, 255, 255); */
+    background: rgb(6,0,26);
+    background: linear-gradient(113deg, rgb(117, 101, 170) 0%, rgba(39, 11, 255, 0.281) 90%, rgba(27,12,131,1) 100%);
+}
+
+.invia input:hover{
+    box-shadow: 0 0 5px #7565aa,
+    0 0 20px #7565AA,
+    0 0 60px #7565AA,
+    0 0 150px #7565AA;
+    background: linear-gradient(113deg, rgba(27,12,131,1)  0%, rgba(123, 105, 255, 0.281) 90%, rgb(117, 101, 170) 100%);
+    transition: 0.1s;
+    border: 4px solid white;
+}
+
+.copy-text{
+    width: auto;
+    height: 40px;
+    padding: 8px; 
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    float: right;
+    font-size: 16px;
+    /* border: 1px solid rgb(255, 255, 255); */
+    background: rgb(6,0,26);
+    background: linear-gradient(113deg, rgb(117, 101, 170) 0%, rgba(39, 11, 255, 0.281) 90%, rgba(27,12,131,1) 100%);
+}
+
+.copy-text:hover{
+    /* box-shadow: 0 0 5px #7565aa,
+    0 0 20px #7565AA,
+    0 0 60px #7565AA,
+    0 0 150px #7565AA; */
+    background: linear-gradient(113deg, rgba(27,12,131,1)  0%, rgba(123, 105, 255, 0.281) 90%, rgb(117, 101, 170) 100%);
+    transition: 0.1s;
+    border: 1px solid white;
+}
+
+.chiSiamo-info p{
+    color: #ffffff;
+    text-align: center;
+}
+
+.switch{
+    width: 32px;
+    height: 22px;
+    color: #ffffff;
+    position: absolute;
+    left: 948px;
+    top: 400px;
+    transition: 0.2s;
+}
+
+.switch:hover{
+    /* background-color: #616161cb; */
+    height: auto;
+    width: 32px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.switch a{
+    color: #ffffff;
+}
+
+.switch:active {
+    transform: rotate(360deg);
+    transition: 0.1s;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+
+.spinner-wrapper{
+    width: 100%;
+    height: 100%;
+    background-color: #151515;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.spinner {
+    position: relative;
+    width: 8rem;
+    height: 8rem;
+    border-radius: 50%;
+}
+
+.spinner::before, 
+.spinner:after{
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+}
+
+.spinner:before {
+    width: 100%;
+    height: 100%;
+    background-image:linear-gradient(90deg, #ff00cc 0%,#333399 100% );
+    animation: spin .5s infinite linear;
+}
+
+.spinner:after {
+    width: 90%;
+    height: 90%;
+    background-color: #151515;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.main-content{
+    width: 100%;
+    height: 100vh;
+    background: url("https://source.unsplash.com/random/4000x4000") center no-repeat;
+    background-size: cover;
+}
+
+#cryptmode, 
+#cryptkey, 
+#decryptmode, 
+#decryptkey, 
+#SYMmode, 
+#RSAmode{
+    height: 32px;
+    background-image: url(images/texture3.jpg);
+    background-size: cover;
+    color: #ffffff;
+    background-color: #000000;
+    position: absolute;
+}
+
+#decryptmode, #cryptmode{
+    left: 108px;
+    top: 232px;
+}
+
+#decryptkey, #cryptkey{
+    border: 1px solid grey;
+    padding-left: 4px; 
+    left: 108px;
+    top: 356px;
+}
+
+#SYMmode, #RSAmode{
+    left: 108px;
+    top: 296px;
+}
+
+.testoPadding{
+    padding-left: 8px;
+}
+
+.spazioBianco{
+    /* background-color: #fefdf9;
+    height: 100px; */
+    width: 80%;
+    margin-left: 10%;
+    margin-top: 200px;
+    border-top: 1px solid white;
+}
+
+/* .testoApparizione{
+    width: 1000px;
+    height: 800px;
+    border: 1px solid #000000;
+    position: absolute;
+    top: 804px;
+    border-radius: 8px;
+    font-size: 24px;
+    text-align: center;  
+    font-weight: bold;   
+    margin-top: 204px;    
+    border: 1px solid black;  
+} */
+
+.testoApparizione h1{
+    color: #000000;
+}
+
+.testoApparizione p{
+    padding-top: 64px;
+    line-height: 40px;
+}
+
+/* .boh{
+    background-image: url(images/vision5.jpg);
+    background-size: cover;
+    width: 100%;
+    height: 1080px; 
+} */
+
+textarea::placeholder{
+    font-size: 24px;
+}
+
+.informazioniAlgoritmi{
+    /* border: 1px solid white;  */
+    width: 80%;
+    height: 2400px;
+    margin-left: 10%;
+}
+
+.informazioniAlgoritmi h1{
+    font-size: 32px;
+}
+
+.informazioniAlgoritmi p{
+    font-size: 21px;
+    color: #ffffff;
+    font-weight: normal;
+    margin-top: 16px;
+    line-height: 40px;
+}
+
+.descrizioneAlgoritmo{
+    /* border-right: 1px solid white; */
+    padding-right: 100px;
+    float: left;
+    margin-left: 300px;     
+    margin-bottom: 200px;
+}
+
+.descrizioneAlgoritmo h1{
+    font-size: 80px;
+    text-align: left;
+}
+
+
+.procedimento{
+    /* float: right; */     
+    margin-left: 300px;
+    margin-top: 200px;
+    text-align: left;
+
+}
+
+.procedimento h1{
+    text-align: left;
+}
